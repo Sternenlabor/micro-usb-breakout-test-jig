@@ -61,7 +61,6 @@ void loop()
     {
         if (checkConnection(pair.pinA, pair.pinB))
         {
-            display.drawBitmap(0, 0, pair.imageData, 128, 64, 1);
             anyPinConnected = true;
         }
     }
