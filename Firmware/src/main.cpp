@@ -15,7 +15,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("Starting BLE work!");
+    Serial.println("Tester started");
 
     // Initialize LEDC
     ledcSetup(LEDC_CHANNEL, LEDC_BASE_FREQ, LEDC_RESOLUTION);
@@ -31,29 +31,16 @@ void setup()
 
     // Clear the buffer
     display.clearDisplay();
+    display.drawBitmap(0, 0, image_data_boot_screen, 128, 64, 1);
+    display.display();
 
-    // display.setTextSize(1); // Normal 1:1 pixel scale
-    // display.setFont(&FreeMono9pt7b);
-    display.setTextColor(SSD1306_WHITE); // Draw white text
-    display.setCursor(0, 0);             // Start at top-left corner
-
-    // display.print("booting...");
-
-    delay(10);
+    delay(3000);
 }
-
-bool runChecks = true;
-bool noConnection = false;
 
 void loop()
 {
     display.clearDisplay();
-
-    // Draw bitmap on the screen
     display.drawBitmap(0, 0, image_data_USB_Breakout, 128, 64, 1);
-
-    // display.drawBitmap(0, 0, image_data_OK, 128, 64, 1);
-
     display.display();
 
     bool anyPinConnected = false;
@@ -65,14 +52,20 @@ void loop()
         }
     }
 
-    delay(1000);
+    if (!anyPinConnected)
+    {
+        return;
+    }
 
+    bool noConnection = false;
     for (PinPair &pair : pinPairs)
     {
         if (!checkConnection(pair.pinA, pair.pinB))
         {
             display.drawBitmap(0, 0, pair.imageData, 128, 64, 1);
             noConnection = true;
+
+            Serial.println("Pin not connected: " + pair.pinA);
         }
     }
 
@@ -86,6 +79,8 @@ void loop()
             {
                 display.drawBitmap(0, 0, check.imageData, 128, 64, 1);
                 shortDetected = true;
+
+                Serial.println("Short detected: " + check.pin);
             }
         }
     }
@@ -93,31 +88,23 @@ void loop()
     display.display();
 
     // if any pin is connected, start the real check
-    if (anyPinConnected && runChecks)
+    if (anyPinConnected)
     {
-        runChecks = false;
 
         // If all pins are connected and no shorts detected, display a OK message
         if (!noConnection && !shortDetected)
         {
             playSuccessMelody();
+            display.drawBitmap(0, 0, image_data_OK, 128, 64, 1);
+            display.display();
+
+            Serial.println("OK");
         }
         else
         {
             playErrorMelody();
+            Serial.println("NOK");
         }
-    }
-    else
-    {
-        runChecks = true;
-    }
-
-    delay(1000);
-
-    // If all pins are connected and no shorts detected, display a OK message
-    if (!noConnection && !shortDetected)
-    {
-        display.drawBitmap(0, 0, image_data_OK, 128, 64, 1);
     }
 
     delay(1000);

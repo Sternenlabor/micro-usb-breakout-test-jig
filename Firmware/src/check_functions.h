@@ -9,8 +9,7 @@
  */
 bool checkShort(int pinToCheck)
 {
-    int pins[] = {A_SHIELD_PIN, A_GND_PIN, A_5V_PIN, A_Dminus_PIN, A_Dplus_PIN, A_ID_PIN,
-                  B_SHIELD_PIN, B_GND_PIN, B_5V_PIN, B_Dminus_PIN, B_Dplus_PIN, B_ID_PIN};
+    int pins[] = {A_SHIELD_PIN, A_GND_PIN, A_5V_PIN, A_Dminus_PIN, A_Dplus_PIN, A_ID_PIN};
 
     // Set the checked pin as INPUT_PULLUP and all others as OUTPUT and LOW
     for (int i = 0; i < sizeof(pins) / sizeof(pins[0]); i++)
