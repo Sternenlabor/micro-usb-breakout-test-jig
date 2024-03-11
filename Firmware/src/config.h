@@ -3,16 +3,16 @@
 
 #include <images.h>
 
+#define I2C_SDA 27
+#define I2C_SCL 14
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C
 
-#define DAC1 25 // (GPIO25)
-#define DAC2 26 // (GPIO26)
-
-#define BUZZER_PIN 25 // Connect your speaker or buzzer to GPIO 25
+#define BUZZER_PIN 32
 #define LEDC_CHANNEL 0
 #define LEDC_TIMER 13
 #define LEDC_RESOLUTION 8 // Resolution of 8 bits
@@ -20,18 +20,18 @@
 
 #define TONE_PWM_CHANNEL 0
 
-#define A_SHIELD_PIN 16
-#define A_GND_PIN 18
-#define A_5V_PIN 23
-#define A_Dminus_PIN 14
-#define A_Dplus_PIN 32
-#define A_ID_PIN 4
+#define A_SHIELD_PIN 18
+#define A_GND_PIN 19
+#define A_5V_PIN 21
+#define A_Dminus_PIN 22
+#define A_Dplus_PIN 33
+#define A_ID_PIN 23
 
-#define B_SHIELD_PIN 17
-#define B_GND_PIN 19
-#define B_5V_PIN 13
-#define B_Dminus_PIN 27
-#define B_Dplus_PIN 33
+#define B_SHIELD_PIN 4
+#define B_GND_PIN 16
+#define B_5V_PIN 17
+#define B_Dminus_PIN 13
+#define B_Dplus_PIN 25
 #define B_ID_PIN 5
 
 // Define an array of pin checks and corresponding images

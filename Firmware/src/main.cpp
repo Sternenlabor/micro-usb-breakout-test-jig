@@ -12,8 +12,12 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+bool bootup = true;
+
 void setup()
 {
+    Wire.begin(I2C_SDA, I2C_SCL);
+
     Serial.begin(115200);
     Serial.println("Tester started");
 
@@ -29,16 +33,20 @@ void setup()
             ; // Infinite loop
     }
 
-    // Clear the buffer
+    display.setRotation(2);
+
     display.clearDisplay();
     display.drawBitmap(0, 0, image_data_boot_screen, 128, 64, 1);
     display.display();
-
-    delay(3000);
 }
 
 void loop()
 {
+    if (bootup) {
+        bootup = false;
+        delay(3000);
+    }
+
     display.clearDisplay();
     display.drawBitmap(0, 0, image_data_USB_Breakout, 128, 64, 1);
     display.display();
